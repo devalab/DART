@@ -12,11 +12,8 @@ All the codes have been tested on Linux (ubuntu)
 
 ## Requirements:
 Python 3.7
-
 Pytorch 1.2
-
 Matplotlib
-
 Jupyter Notebook
 
 ## Usage:
