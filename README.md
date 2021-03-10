@@ -11,11 +11,12 @@ This repository contains code for training the DART model using a small subset o
 All the codes have been tested on Linux (ubuntu)
 
 ## Requirements:
+```
 Python 3.7
 Pytorch 1.2
 Matplotlib
 Jupyter Notebook
-
-## Usage:
-
+```
+## Source code:
+The code is writen in Jupyter notebooks. 
 
