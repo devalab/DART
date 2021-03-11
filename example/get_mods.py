@@ -5,12 +5,14 @@ import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 from torch.nn.utils.rnn import pad_sequence
 import torch.optim as optim
+import argparse, logging, string, random, sys, os, pdb
+
 
 device = "cuda"
 
-class DartModel(nn.Module):
-    def __init__(self, lh, lo, li):
-        super(DartModel, self).__init__()
+class DART_Net(nn.Module):
+    def __init__(self, lh, lo, li2, li3, li4):
+        super(DART_Net, self).__init__()
         self.fi1 = nn.Linear(3, lh)
         self.fi2 = nn.Linear(lh, lo)
         
@@ -23,10 +25,11 @@ class DartModel(nn.Module):
         self.fl1 = nn.Linear(3, lh)
         self.fl2 = nn.Linear(lh, lo)
         
-        self.inter1 = nn.Linear(li, 256)
-        self.inter2 = nn.Linear(256, 128)
-        self.inter3 = nn.Linear(128, 32)
-        self.inter4 = nn.Linear(32, 1)
+        self.inter1 = nn.Linear(lo, li2)
+        self.inter2 = nn.Linear(li2, li3)
+        self.inter3 = nn.Linear(li3, li4)
+        self.inter4 = nn.Linear(li4, 1)
+        self.mask = nn.Linear(lo, lo, bias=False)
         
     def forward(self, ai, aj, ak, al):
         ai_sum = ai.sum(axis=2)
@@ -61,21 +64,24 @@ class DartModel(nn.Module):
         ai = F.celu(self.fi1(ai), 0.1)
         ai = F.celu(self.fi2(ai), 0.1)
         ai = ai * ai_mask
+        
         ######### atom_j ############
         aj = F.celu(self.fj1(aj), 0.1)
         aj = F.celu(self.fj2(aj), 0.1)
         aj = aj * aj_mask
+
         ######### atom_k ############
         ak = F.celu(self.fk1(ak), 0.1)
         ak = F.celu(self.fk2(ak), 0.1)
         ak = ak * ak_mask
-        ######## atom_l ############
+        
+        ######### atom_l ############
         al = F.celu(self.fl1(al), 0.1)
         al = F.celu(self.fl2(al), 0.1)
         al = al * al_mask
 
-        ########### interactions of i, j, k and l atoms ############
-        atm = ai + aj.sum(axis=2) + al.sum(axis=2) + al.sum(axis=2) # sum all interaction
+        ########### interactions of i and j atoms ############
+        atm = ai + aj.sum(axis=2) + ak.sum(axis=2) + al.sum(axis=2) # sum all interaction
         atm = F.celu(self.inter1(atm), 0.1)
         atm = F.celu(self.inter2(atm), 0.1)
         atm = F.celu(self.inter3(atm), 0.1)
@@ -139,3 +145,22 @@ class sep_ijkl_dataset(Dataset):
     def __getitem__(self, idx):
         sample = {"atm_i": self.des_i[idx], "atm_j": self.des_j[idx], "atm_k": self.des_k[idx], "atm_l": self.des_l[idx], "energy": self.ener[idx]}
         return sample
+
+
+def load_checkpoint(checkpoint, model, optimizer=None):
+    """Loads model parameters (state_dict) from file_path. If optimizer is provided, loads state_dict of
+    optimizer assuming it is present in checkpoint.
+    Args:
+        checkpoint: (string) filename which needs to be loaded
+        model: (torch.nn.Module) model for which the parameters are loaded
+        optimizer: (torch.optim) optional: resume optimizer from checkpoint
+    """
+    if not os.path.exists(checkpoint):
+        raise ("File doesn't exist {}".format(checkpoint))
+    checkpoint = torch.load(checkpoint)
+    model.load_state_dict(checkpoint['state_dict'])
+
+    if optimizer:
+        optimizer.load_state_dict(checkpoint['optim_dict'])
+
+    return checkpoint
