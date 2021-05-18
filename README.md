@@ -3,7 +3,7 @@ DART model predicts metallic cluster's energy using Topological atomic descripto
 
 In the conventional approach, for identifying unique low energy structures, Quantum Mechanics (QM) geometry optimization is a bottleneck. In this work, we have introduced a model called DART. DART can predict a given cluster's energy in a fraction of computational time compared to QM with accuracy comparable to QM. DART can identify/filter a few hundred low-energy structures from thousands of structures obtained from MD simulations. The advantage of using DART is that one can avoid the need to perform geometry optimization of all the thousands of structures obtained from MD simulations.
 
-![new_workflow](https://user-images.githubusercontent.com/24433906/110602836-5f68e500-81ac-11eb-8806-1f1f270861b7.png)
+![new_workflow](https://user-images.githubusercontent.com/24433906/118666801-1454f900-b811-11eb-874a-191470243fed.png)
 
 This repository contains code for training the DART model using a small subset of the dataset described in the paper.
 
