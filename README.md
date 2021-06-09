@@ -20,3 +20,13 @@ Jupyter Notebook
 ## Source code:
 The code is writen in Jupyter notebooks. 
 
+## Publication
+If you find this useful in your research, please cite:
+
+	@article{modee2021dart,
+		title={DART: Deep Learning Enabled Topological Interaction Model for Energy Prediction of Metal Clusters and its Application in Identifying Unique Low Energy Isomers},
+		author={Modee, Rohit and Agarwal, Sheena and Verma, Ashwini and Joshi, Kavita and Priyakumar, U},
+		year={2021},
+		publisher={ChemRxiv}
+	}	
+
