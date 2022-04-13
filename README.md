@@ -23,10 +23,11 @@ The code is writen in Jupyter notebooks.
 ## Publication
 If you find this useful in your research, please cite:
 
-	@article{modee2021dart,
-		title={DART: Deep Learning Enabled Topological Interaction Model for Energy Prediction of Metal Clusters and its Application in Identifying Unique Low Energy Isomers},
-		author={Modee, Rohit and Agarwal, Sheena and Verma, Ashwini and Joshi, Kavita and Priyakumar, U},
-		year={2021},
-		publisher={ChemRxiv}
+	@article{Modee2021,
+	journal = {Phys. Chem. Chem. Phys.},
+	title = {{DART: Deep Learning Enabled Topological Interaction Model for Energy Prediction of Metal Clusters and its Application in Identifying Unique Low Energy Isomers}},
+	author = {Modee, Rohit and Agarwal, Sheena and Verma, Ashwini and Joshi, Kavita and Priyakumar, U. Deva},
+	doi = {10.1039/d1cp02956h},
+	year = {2021}
 	}	
 
